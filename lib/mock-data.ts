@@ -3,6 +3,7 @@ import type {
   Conversation,
   MonthlySalesPoint,
   Order,
+  OrderStatus,
   Product,
   Shipment,
 } from "@/types";
@@ -16,7 +17,7 @@ export const mockProducts: Product[] = [
     name: "Akdeniz Termal Çorap",
     category: "Çorap",
     price: 189,
-    stock: 156,
+    stock: 5,
     description: "Yumuşak pamuk karışımı, kış ayları için ideal termal çorap.",
     imageUrl: pic("aura-c1"),
     active: true,
@@ -36,7 +37,7 @@ export const mockProducts: Product[] = [
     name: "Minimal Altın Küpe Seti",
     category: "Takı",
     price: 425,
-    stock: 42,
+    stock: 4,
     description: "Hipoalerjenik kaplama, 3'lü set.",
     imageUrl: pic("aura-j1"),
     active: true,
@@ -46,7 +47,7 @@ export const mockProducts: Product[] = [
     name: "El Örgüsü Yün Çorap",
     category: "Çorap",
     price: 129,
-    stock: 5,
+    stock: 48,
     description: "El emeği, sıcak tutan kalın örgü.",
     imageUrl: pic("aura-c2"),
     active: true,
@@ -93,195 +94,240 @@ export const mockProducts: Product[] = [
   },
 ];
 
-export const mockOrders: Order[] = [
-  {
-    id: "ORD-501",
-    orderNumber: "A-240501",
-    customer: { name: "Elif Yılmaz", avatarUrl: pic("cust-elif", 40, 40) },
+function mkOrder(
+  id: string,
+  orderNumber: string,
+  customerName: string,
+  custSeed: string,
+  product: Product,
+  quantity: number,
+  date: string,
+  status: OrderStatus,
+): Order {
+  return {
+    id,
+    orderNumber,
+    customer: { name: customerName, avatarUrl: pic(custSeed, 40, 40) },
     items: [
       {
         id: "L1",
-        name: mockProducts[0].name,
-        imageUrl: mockProducts[0].imageUrl,
-        category: "Çorap",
-        quantity: 2,
+        name: product.name,
+        imageUrl: product.imageUrl,
+        category: product.category,
+        quantity,
       },
     ],
-    category: "Çorap",
-    totalQuantity: 2,
-    date: "2026-05-10",
-    status: "shipping",
-  },
-  {
-    id: "ORD-502",
-    orderNumber: "A-240502",
-    customer: { name: "Ayşe Kaya", avatarUrl: pic("cust-ayse", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[1].name,
-        imageUrl: mockProducts[1].imageUrl,
-        category: "Şal",
-        quantity: 1,
-      },
-    ],
-    category: "Şal",
-    totalQuantity: 1,
-    date: "2026-05-09",
-    status: "received",
-  },
-  {
-    id: "ORD-503",
-    orderNumber: "A-240503",
-    customer: { name: "Zeynep Demir", avatarUrl: pic("cust-zey", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[2].name,
-        imageUrl: mockProducts[2].imageUrl,
-        category: "Takı",
-        quantity: 1,
-      },
-    ],
-    category: "Takı",
-    totalQuantity: 1,
-    date: "2026-05-08",
-    status: "delivered",
-  },
-  {
-    id: "ORD-504",
-    orderNumber: "A-240504",
-    customer: { name: "Merve Arslan", avatarUrl: pic("cust-mer", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[3].name,
-        imageUrl: mockProducts[3].imageUrl,
-        category: "Çorap",
-        quantity: 4,
-      },
-    ],
-    category: "Çorap",
-    totalQuantity: 4,
-    date: "2026-05-07",
-    status: "shipping",
-  },
-  {
-    id: "ORD-505",
-    orderNumber: "A-240505",
-    customer: { name: "Selin Öztürk", avatarUrl: pic("cust-sel", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[4].name,
-        imageUrl: mockProducts[4].imageUrl,
-        category: "Çanta",
-        quantity: 1,
-      },
-    ],
-    category: "Çanta",
-    totalQuantity: 1,
-    date: "2026-05-06",
-    status: "received",
-  },
-  {
-    id: "ORD-506",
-    orderNumber: "A-240506",
-    customer: { name: "Burcu Şahin", avatarUrl: pic("cust-bur", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[5].name,
-        imageUrl: mockProducts[5].imageUrl,
-        category: "Şal",
-        quantity: 2,
-      },
-    ],
-    category: "Şal",
-    totalQuantity: 2,
-    date: "2026-05-05",
-    status: "delivered",
-  },
-  {
-    id: "ORD-507",
-    orderNumber: "A-240507",
-    customer: { name: "Deniz Aydın", avatarUrl: pic("cust-den", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[6].name,
-        imageUrl: mockProducts[6].imageUrl,
-        category: "Takı",
-        quantity: 1,
-      },
-    ],
-    category: "Takı",
-    totalQuantity: 1,
-    date: "2026-05-04",
-    status: "shipping",
-  },
-  {
-    id: "ORD-508",
-    orderNumber: "A-240508",
-    customer: { name: "Ceren Polat", avatarUrl: pic("cust-cer", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[7].name,
-        imageUrl: mockProducts[7].imageUrl,
-        category: "Çorap",
-        quantity: 3,
-      },
-    ],
-    category: "Çorap",
-    totalQuantity: 3,
-    date: "2026-05-03",
-    status: "received",
-  },
-  {
-    id: "ORD-509",
-    orderNumber: "A-240509",
-    customer: { name: "Gizem Koç", avatarUrl: pic("cust-giz", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[0].name,
-        imageUrl: mockProducts[0].imageUrl,
-        category: "Çorap",
-        quantity: 1,
-      },
-      {
-        id: "L2",
-        name: mockProducts[1].name,
-        imageUrl: mockProducts[1].imageUrl,
-        category: "Şal",
-        quantity: 1,
-      },
-    ],
-    category: "Çorap",
-    totalQuantity: 2,
-    date: "2026-05-02",
-    status: "delivered",
-  },
-  {
-    id: "ORD-510",
-    orderNumber: "A-240510",
-    customer: { name: "İrem Çelik", avatarUrl: pic("cust-ire", 40, 40) },
-    items: [
-      {
-        id: "L1",
-        name: mockProducts[4].name,
-        imageUrl: mockProducts[4].imageUrl,
-        category: "Çanta",
-        quantity: 1,
-      },
-    ],
-    category: "Çanta",
-    totalQuantity: 1,
-    date: "2026-05-01",
-    status: "shipping",
-  },
+    category: product.category,
+    totalQuantity: quantity,
+    productId: product.id,
+    quantity,
+    date,
+    status,
+  };
+}
+
+const ORDER_CUSTOMERS = [
+  ["Elif Yılmaz", "cust-elif"],
+  ["Ayşe Kaya", "cust-ayse"],
+  ["Zeynep Demir", "cust-zey"],
+  ["Merve Arslan", "cust-mer"],
+  ["Selin Öztürk", "cust-sel"],
+  ["Burcu Şahin", "cust-bur"],
+  ["Deniz Aydın", "cust-den"],
+  ["Ceren Polat", "cust-cer"],
+  ["Gizem Koç", "cust-giz"],
+  ["İrem Çelik", "cust-ire"],
+] as const;
+
+function pickCust(i: number) {
+  const [name, seed] = ORDER_CUSTOMERS[i % ORDER_CUSTOMERS.length]!;
+  return { name, seed };
+}
+
+/**
+ * Son 3 ay satış hacimleri (stok analizi):
+ * PRD-1001 termal çorap → 45 adet | PRD-1002 şal → 30 | PRD-1006 bohem şal → 5 | PRD-1003 küpe → 9 | PRD-1004 → 0
+ */
+function buildAnalyticsOrders(): Order[] {
+  const out: Order[] = [];
+  let n = 0;
+  const thermalDates = [
+    "2026-05-09",
+    "2026-05-07",
+    "2026-05-05",
+    "2026-04-28",
+    "2026-04-15",
+    "2026-04-02",
+    "2026-03-18",
+    "2026-03-05",
+    "2026-02-08",
+  ];
+  for (let i = 0; i < 9; i++) {
+    const { name, seed } = pickCust(n++);
+    out.push(
+      mkOrder(
+        `ORD-A1-${i}`,
+        `A-26A${String(100 + i)}`,
+        name,
+        seed,
+        mockProducts[0]!,
+        5,
+        thermalDates[i]!,
+        "delivered",
+      ),
+    );
+  }
+  const scarfDates = [
+    "2026-05-08",
+    "2026-05-04",
+    "2026-04-20",
+    "2026-04-10",
+    "2026-03-22",
+    "2026-02-12",
+  ];
+  for (let i = 0; i < 6; i++) {
+    const { name, seed } = pickCust(n++);
+    out.push(
+      mkOrder(
+        `ORD-A2-${i}`,
+        `A-26B${String(100 + i)}`,
+        name,
+        seed,
+        mockProducts[1]!,
+        5,
+        scarfDates[i]!,
+        "delivered",
+      ),
+    );
+  }
+  const bohemDates = [
+    "2026-05-06",
+    "2026-04-25",
+    "2026-04-08",
+    "2026-03-12",
+    "2026-02-20",
+  ];
+  for (let i = 0; i < 5; i++) {
+    const { name, seed } = pickCust(n++);
+    out.push(
+      mkOrder(
+        `ORD-A6-${i}`,
+        `A-26F${String(100 + i)}`,
+        name,
+        seed,
+        mockProducts[5]!,
+        1,
+        bohemDates[i]!,
+        "delivered",
+      ),
+    );
+  }
+  const jewelDates = ["2026-05-03", "2026-04-05", "2026-02-18"];
+  for (let i = 0; i < 3; i++) {
+    const { name, seed } = pickCust(n++);
+    out.push(
+      mkOrder(
+        `ORD-A3-${i}`,
+        `A-26C${String(100 + i)}`,
+        name,
+        seed,
+        mockProducts[2]!,
+        3,
+        jewelDates[i]!,
+        "delivered",
+      ),
+    );
+  }
+  return out;
+}
+
+const showcaseOrders: Order[] = [
+  mkOrder(
+    "ORD-501",
+    "A-240501",
+    "Elif Yılmaz",
+    "cust-elif",
+    mockProducts[7]!,
+    2,
+    "2026-05-10",
+    "shipping",
+  ),
+  mkOrder(
+    "ORD-502",
+    "A-240502",
+    "Ayşe Kaya",
+    "cust-ayse",
+    mockProducts[4]!,
+    1,
+    "2026-05-09",
+    "received",
+  ),
+  mkOrder(
+    "ORD-504",
+    "A-240504",
+    "Merve Arslan",
+    "cust-mer",
+    mockProducts[7]!,
+    4,
+    "2026-05-07",
+    "shipping",
+  ),
+  mkOrder(
+    "ORD-505",
+    "A-240505",
+    "Selin Öztürk",
+    "cust-sel",
+    mockProducts[4]!,
+    1,
+    "2026-05-06",
+    "received",
+  ),
+  mkOrder(
+    "ORD-507",
+    "A-240507",
+    "Deniz Aydın",
+    "cust-den",
+    mockProducts[6]!,
+    1,
+    "2026-05-04",
+    "shipping",
+  ),
+  mkOrder(
+    "ORD-508",
+    "A-240508",
+    "Ceren Polat",
+    "cust-cer",
+    mockProducts[7]!,
+    3,
+    "2026-05-03",
+    "received",
+  ),
+  mkOrder(
+    "ORD-509",
+    "A-240509",
+    "Gizem Koç",
+    "cust-giz",
+    mockProducts[4]!,
+    2,
+    "2026-05-02",
+    "delivered",
+  ),
+  mkOrder(
+    "ORD-510",
+    "A-240510",
+    "İrem Çelik",
+    "cust-ire",
+    mockProducts[6]!,
+    1,
+    "2026-05-01",
+    "shipping",
+  ),
 ];
+
+export const mockOrders: Order[] = [
+  ...buildAnalyticsOrders(),
+  ...showcaseOrders,
+].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
 export const mockMonthlySales: MonthlySalesPoint[] = [
   { month: "Ara", Çorap: 210, Şal: 88, Takı: 54, Diğer: 32 },

@@ -4,6 +4,27 @@ import Link from "next/link";
 import { Pencil } from "lucide-react";
 import type { Product } from "@/types";
 
+function StockDisplay({ stock }: { stock: number }) {
+  if (stock <= 5) {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+        </span>
+        <span className="text-base font-bold text-[#DC2626]">{stock}</span>
+        <span className="text-xs font-medium text-red-400">Kritik</span>
+      </div>
+    );
+  }
+  if (stock <= 19) {
+    return (
+      <span className="font-bold text-[#D97706]">{stock}</span>
+    );
+  }
+  return <span className="font-medium text-gray-800">{stock}</span>;
+}
+
 export function InventoryTable({ products }: { products: Product[] }) {
   return (
     <div className="rounded-card border border-white bg-white p-5 shadow-aura">
@@ -38,12 +59,8 @@ export function InventoryTable({ products }: { products: Product[] }) {
                 <td className="py-3 pr-4 font-mono text-xs text-aura-text-secondary">
                   {p.id}
                 </td>
-                <td
-                  className={`py-3 pr-4 font-semibold ${
-                    p.stock < 10 ? "text-rose-600" : "text-aura-text-primary"
-                  }`}
-                >
-                  {p.stock}
+                <td className="py-3 pr-4">
+                  <StockDisplay stock={p.stock} />
                 </td>
                 <td className="py-3">
                   <Link
