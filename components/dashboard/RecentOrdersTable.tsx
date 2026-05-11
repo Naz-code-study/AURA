@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
+import { CancelOrderModal } from "@/components/dashboard/CancelOrderModal";
 import type { Order, OrderStatus } from "@/types";
 
 function statusLabel(s: OrderStatus) {
@@ -18,9 +19,22 @@ function statusClass(s: OrderStatus) {
   return "bg-emerald-50 text-emerald-700 border border-emerald-100";
 }
 
-export function RecentOrdersTable({ orders }: { orders: Order[] }) {
+export function RecentOrdersTable({
+  orders,
+  onOrdersChange,
+}: {
+  orders: Order[];
+  onOrdersChange: (next: Order[]) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState<Order | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = window.setTimeout(() => setToast(null), 4200);
+    return () => window.clearTimeout(t);
+  }, [toast]);
 
   return (
     <div className="rounded-card border border-white bg-white p-5 shadow-aura">
@@ -111,49 +125,25 @@ export function RecentOrdersTable({ orders }: { orders: Order[] }) {
         </table>
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-md rounded-card bg-white p-6 shadow-xl">
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h3 className="text-lg font-semibold text-aura-text-primary">
-                  Sipariş iptali
-                </h3>
-                <p className="mt-2 text-sm text-aura-text-secondary">
-                  Siparişi iptal edip müşteriye mesaj gönderilsin mi?
-                </p>
-                {target && (
-                  <p className="mt-2 text-xs font-mono text-aura-text-secondary">
-                    {target.orderNumber} — {target.customer.name}
-                  </p>
-                )}
-              </div>
-              <button
-                type="button"
-                className="rounded-full p-1 text-aura-text-secondary hover:bg-aura-page"
-                onClick={() => setOpen(false)}
-                aria-label="Kapat"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                className="rounded-full border border-aura-pink-light px-4 py-2 text-sm font-semibold text-aura-text-secondary transition hover:border-aura-purple hover:text-aura-purple"
-                onClick={() => setOpen(false)}
-              >
-                Vazgeç
-              </button>
-              <button
-                type="button"
-                className="rounded-full bg-aura-pink px-4 py-2 text-sm font-semibold text-white shadow-aura transition hover:bg-aura-purple"
-                onClick={() => setOpen(false)}
-              >
-                Evet, iptal et
-              </button>
-            </div>
-          </div>
+      <CancelOrderModal
+        open={open}
+        order={target}
+        onClose={() => {
+          setOpen(false);
+          setTarget(null);
+        }}
+        onSuccess={(orderId) => {
+          onOrdersChange(orders.filter((x) => x.id !== orderId));
+          setToast("Sipariş iptal edildi, müşteriye mesaj gönderildi ✓");
+        }}
+      />
+
+      {toast && (
+        <div
+          className="fixed bottom-6 left-1/2 z-[60] max-w-md -translate-x-1/2 rounded-full border border-emerald-200 bg-emerald-50 px-5 py-3 text-center text-sm font-medium text-emerald-900 shadow-lg"
+          role="status"
+        >
+          {toast}
         </div>
       )}
     </div>

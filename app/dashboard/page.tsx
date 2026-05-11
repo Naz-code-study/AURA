@@ -5,6 +5,7 @@ import { KpiCards } from "@/components/dashboard/KpiCards";
 import { CelebrationBanner } from "@/components/dashboard/CelebrationBanner";
 import { DonutChart } from "@/components/dashboard/DonutChart";
 import { SalesLineChart } from "@/components/dashboard/SalesLineChart";
+import { StockAlertBanner } from "@/components/dashboard/StockAlertBanner";
 import { RecentOrdersTable } from "@/components/dashboard/RecentOrdersTable";
 import { InventoryTable } from "@/components/dashboard/InventoryTable";
 import { getOrders, getProducts } from "@/lib/api";
@@ -36,7 +37,12 @@ export default function DashboardPage() {
         <DonutChart />
         <SalesLineChart />
       </div>
-      {orders.length > 0 && <RecentOrdersTable orders={orders} />}
+      {orders.length > 0 && products.length > 0 && (
+        <StockAlertBanner orders={orders} products={products} />
+      )}
+      {orders.length > 0 && (
+        <RecentOrdersTable orders={orders} onOrdersChange={setOrders} />
+      )}
       {products.length > 0 && <InventoryTable products={products} />}
     </div>
   );
