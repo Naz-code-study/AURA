@@ -21,6 +21,10 @@ export interface Order {
   /** Birincil kategori (tablo için) */
   category: string;
   totalQuantity: number;
+  /** Stok analizi ve iptal akışı için birincil ürün */
+  productId: string;
+  /** Birincil satır adedi */
+  quantity: number;
   date: string;
   status: OrderStatus;
 }
