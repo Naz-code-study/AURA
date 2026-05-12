@@ -45,6 +45,7 @@ export interface Product {
   description: string;
   imageUrl: string;
   active: boolean;
+  daily_avg_sales: number;
 }
 
 export interface ProductInput {

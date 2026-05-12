@@ -21,7 +21,11 @@ export async function getOrders(): Promise<Order[]> {
 
 /** GET /api/products */
 export async function getProducts(): Promise<Product[]> {
-  return mockProducts;
+  const response = await fetch('/api/products');
+  if (!response.ok) {
+    throw new Error('Failed to fetch products');
+  }
+  return response.json();
 }
 
 /** POST /api/products */
