@@ -79,8 +79,3 @@ Müşteri mesajlarındaki tonu (Kızgın, Mutlu, Nötr) analiz eden ve kargo API
 Gecikme risklerini önceden tespit edin ve müşterileriniz şikayet etmeden onları bilgilendirin.
 
 ![Kargo Takip Sistemi](WhatsApp%20Image%202026-05-13%20at%2021.23.52.jpeg)
-
-## 👥 Proje Ekibi
-* **Mihrinur İlunt**
-* **Zeynep Sude Kırmacı**
-* **Naz Erdoğdu**
